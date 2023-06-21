@@ -51,8 +51,8 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-// функция createIdGeneration возвращает функцию, которая генерирует уникальные идентификаторы
-const createIdGeneration = () => {
+// функция createIdGenerator возвращает функцию, которая генерирует уникальные идентификаторы
+const createIdGenerator = () => {
   let lastGeneratedId = 0;
 
   return () => {
@@ -61,7 +61,7 @@ const createIdGeneration = () => {
   };
 };
 
-const generationPhotoId = createIdGeneration();
+const photoIdGenerator = createIdGenerator();
 
 const randomComment = () => {
 
@@ -69,7 +69,7 @@ const randomComment = () => {
   const randomNameIndex = getRandomInteger(0, nameAuthors.length - 1);
 
   return {
-    id: generationPhotoId(),
+    id: photoIdGenerator(),
     avatar: `img/avatar-${getRandomInteger(MAX_AVATAR_COUNT, MIN_AVATAR_COUNT)}.svg`,
     message: `${messages[randomMessageIndex]}`,
     name: `${nameAuthors[randomNameIndex]}`,
