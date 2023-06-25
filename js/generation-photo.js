@@ -1,4 +1,4 @@
-import { photoDescriptions } from './arrays.js';
+import { photoDescriptions } from './data.js';
 import { getRandomInteger } from './util.js';
 import { randomComment } from './random-comment.js';
 import { MIN_PHOTO_COUNT, MAX_PHOTO_COUNT, MIN_LIKE_SCORE, MAX_LIKE_SCORE, MAX_GENERATED_OBJECT_COUNT } from './constans.js';
@@ -16,6 +16,6 @@ const descriptionOfThePublishedPhoto = () => {
   };
 };
 
-const generationPhoto = Array.from({ length: 25 }, descriptionOfThePublishedPhoto);
+const generationPhoto = () => Array.from({ length: 25 }, descriptionOfThePublishedPhoto);
 
 export { generationPhoto };
