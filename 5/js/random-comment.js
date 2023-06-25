@@ -1,5 +1,5 @@
 import { getRandomArrayElement, getRandomInteger } from './util.js';
-import { messages, nameAuthors } from './arrays.js';
+import { messages, nameAuthors } from './data.js';
 import { MAX_AVATAR_COUNT, MIN_AVATAR_COUNT } from './constans.js';
 
 const randomComment = () => {
