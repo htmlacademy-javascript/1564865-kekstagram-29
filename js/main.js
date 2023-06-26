@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+import './random-comment.js';
+import {generationPhoto} from './generation-photo.js';
+
+generationPhoto(); // Объявил, чтобы линтер не агрился))
+=======
 // константы
 const MAX_GENERATED_OBJECT_COUNT = 25;
 const MIN_PHOTO_COUNT = 1;
@@ -95,4 +101,3 @@ const descriptionOfThePublishedPhoto = () => {
 const generationPhoto = Array.from({length: MAX_GENERATED_OBJECT_COUNT}, descriptionOfThePublishedPhoto);
 
 descriptionOfThePublishedPhoto();
-generationPhoto();
