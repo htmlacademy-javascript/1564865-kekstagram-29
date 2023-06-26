@@ -95,3 +95,4 @@ const descriptionOfThePublishedPhoto = () => {
 const generationPhoto = Array.from({length: MAX_GENERATED_OBJECT_COUNT}, descriptionOfThePublishedPhoto);
 
 descriptionOfThePublishedPhoto();
+generationPhoto();
