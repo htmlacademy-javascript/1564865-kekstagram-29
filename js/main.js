@@ -101,3 +101,4 @@ const descriptionOfThePublishedPhoto = () => {
 const generationPhoto = Array.from({length: MAX_GENERATED_OBJECT_COUNT}, descriptionOfThePublishedPhoto);
 
 descriptionOfThePublishedPhoto();
+>>>>>>> 5235268eabf80d7f3c7607e2cb4d49c1da40d3da
