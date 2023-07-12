@@ -1,26 +1,24 @@
 import { renderPhotoMiniatures } from './render-photo-miniatures.js';
 import { openPictureModal } from './render-full-screen-image.js';
-import {photosArray} from './generation-photo.js';
-
-const container = document.querySelector('.pictures');
 
 const renderGallery = (pictures) => {
-  container.addEventListener('click', (evt) => {
-    const thumbnail = evt.target.closest('[data-photo-miniature-id]'); // находим ближайшего родителя элемента
+  const container = document.querySelector('.pictures'); // контейнер для миниатюр фотографий
+
+  const handleThumbnailClick = (evt) => {
+    const thumbnail = evt.target.closest('[data-photo-miniature-id]');
     if (!thumbnail) {
-      return; // если не найден, выходим ничего не обрабатывам
+      return;
     }
 
     evt.preventDefault();
-    const picture = photosArray.find(
-      (item) => item.id === +thumbnail.dataset.photoMiniatureId // приводим к числу, исп. унарный плюс
-    );
+    const { photoMiniatureId } = thumbnail.dataset;
+    const picture = pictures.find((item) => item.id === +photoMiniatureId);
 
     openPictureModal(picture);
+  };
 
-  });
-
-  renderPhotoMiniatures(pictures, container);
+  renderPhotoMiniatures(pictures);
+  container.addEventListener('click', handleThumbnailClick);
 };
 
 export { renderGallery };
