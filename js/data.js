@@ -24,7 +24,7 @@ const photoDescriptions = [
   'Волшебный зимний пейзаж с ледяными сосульками'
 ];
 
-const messages = [
+const userComments = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -34,4 +34,4 @@ const messages = [
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.'
 ];
 
-export { nameAuthors, photoDescriptions, messages };
+export { nameAuthors, photoDescriptions, userComments };
