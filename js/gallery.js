@@ -17,7 +17,7 @@ const renderGallery = (pictures) => {
     openPictureModal(picture);
   };
 
-  renderPhotoMiniatures(pictures, container);
+  renderPhotoMiniatures(pictures);
   container.addEventListener('click', handleThumbnailClick);
 };
 
