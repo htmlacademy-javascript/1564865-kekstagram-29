@@ -1,7 +1,6 @@
 import { isEscapeKey } from './util.js';
-//import { photosArray } from './generation-photo.js';
 
-//const COMMENTS_SHOWN_PER_CLICK = 5;
+const COMMENTS_SHOWN_PER_CLICK = 5;
 
 const bigPictureOverlay = document.querySelector('.big-picture');
 const closePictureButton = document.querySelector('.big-picture__cancel');
@@ -12,6 +11,10 @@ const commentTemplate = document.querySelector('#comment')
 const commentsListElement = bigPictureOverlay.querySelector('.social__comments');
 const commentsLoaderElement = bigPictureOverlay.querySelector('.comments-loader');
 const commentsCountElement = bigPictureOverlay.querySelector('.comments-count');
+const commentShowCountElement = bigPictureOverlay.querySelector('.social__comment-count');
+
+let commentsShow = 0;
+let comments = [];
 
 // Функция создание комментария
 const createComment = ({ avatar, name, message }) => {
@@ -24,16 +27,28 @@ const createComment = ({ avatar, name, message }) => {
   return comment;
 };
 
-const renderComments = (comments) => {
-  commentsListElement.innerHTML = '';
+const renderComments = () => {
+  commentsShow += COMMENTS_SHOWN_PER_CLICK;
 
+  if (commentsShow >= comments.length) {
+    commentsLoaderElement.classList.add('hidden');
+    commentsShow = comments.length;
+  } else {
+    commentsLoaderElement.classList.remove('hidden');
+  }
+
+  const visibleComments = comments.slice(0, commentsShow);
   const fragment = document.createDocumentFragment();
-  comments.forEach((item) => {
-    const comment = createComment(item);
+  visibleComments.forEach((commentData) => {
+    const comment = createComment(commentData);
     fragment.append(comment);
   });
 
+  commentsListElement.innerHTML = '';
   commentsListElement.append(fragment);
+
+  commentShowCountElement.textContent = `${commentsShow} из ${comments.length} комментариев`;
+  commentsCountElement.textContent = comments.length;
 };
 
 const onDocumentKeydown = (evt) => {
@@ -47,7 +62,10 @@ const onDocumentKeydown = (evt) => {
 const closePictureModal = () => {
   bigPictureOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
+  commentsShow = 0;
 };
+
+const onCommentsLoaderClick = () => renderComments();
 
 // Функция рендера большой фотографии с данными
 const renderBigPictureDetails = ({ url, likes, description }) => {
@@ -66,30 +84,14 @@ const openPictureModal = (data) => {
   document.addEventListener('keydown', onDocumentKeydown);
 
   renderBigPictureDetails(data);
-  renderComments(data.comments);
+  commentsShow = 0; // Обнуление значения commentsShow
+  comments = data.comments;
+  if (comments.length > 0) {
+    renderComments();
+  }
 };
 
-
 closePictureButton.addEventListener('click', closePictureModal);
+commentsLoaderElement.addEventListener('click', onCommentsLoaderClick);
 
 export { openPictureModal };
-
-
-// Функция создания комментариев
-// const renderComments = (comments) => {
-//   commentShown += COMMENTS_SHOWN_PER_CLICK;
-//   const fragment = document.createDocumentFragment();
-
-//   if (commentShown >= comments.length) {
-//     commentShown = comments.length;
-//     commentsLoaderElement.classList.add('hidden');
-//   }
-//   for (let i = 0; i < commentShown; i++) {
-//     const commentElement = createComment(comments[i]);
-//     fragment.append(commentElement);
-//   }
-
-//   commentsListElement.innerHTML = '';
-//   commentsListElement.append(fragment);
-//   commentsListElement.textContent = commentShown + ' из ' + comments.length + ' комментариев';
-// };
