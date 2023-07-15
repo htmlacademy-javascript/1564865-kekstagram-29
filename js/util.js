@@ -30,4 +30,10 @@ const generatePhotoId = createGeneratorInRange(1, 100);
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export { getRandomArrayElement, getRandomInteger, isEscapeKey, generatePhotoId };
+function handleKeyDown(evt) {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+}
+
+export { getRandomArrayElement, getRandomInteger, isEscapeKey, generatePhotoId, handleKeyDown };
