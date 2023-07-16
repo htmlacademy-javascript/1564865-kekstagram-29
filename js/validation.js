@@ -1,5 +1,6 @@
 const MAX_HASHTAG_COUNT = 5;
-const REGEX = /^#[a-zа-яё0-9]{1,19}$/i; // Регулярное выражение для проверки валидности хэштега
+const MAX_COMMENT_LENGTH = 140;
+const HASHTAG_VALIDATION_REGEX = /^#[a-zа-яё0-9]{1,19}$/i; // Регулярное выражение для проверки валидности хэштега
 const ErrorText = {
   INVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хэштегов`, // Текст ошибки при неверном количестве хэштегов
   NOT_UNIQUE: 'Хэштеги должны быть уникальными', // Текст ошибки при повторяющихся хэштегах
@@ -17,10 +18,9 @@ const formValidator = new Pristine(uploadForm, {
 });
 
 function validateCommentInput(value) {
-  return value.length <= 140; // Валидация длины комментария (не более 140 символов)
+  return value.length <= MAX_COMMENT_LENGTH;
 }
 
-// Нормализация строки хэштегов - удаление пробелов, разделение по пробелам и фильтрация пустых значений
 function normalizeTags(tagString) {
   return tagString
     .trim()
@@ -29,7 +29,7 @@ function normalizeTags(tagString) {
 }
 
 function hasValidTags(value) {
-  return normalizeTags(value).every((tag) => REGEX.test(tag));
+  return normalizeTags(value).every((tag) => HASHTAG_VALIDATION_REGEX.test(tag));
 }
 
 function hasValidCount(value) {
@@ -43,20 +43,16 @@ function hasUniqueTags(value) {
     lowerCaseTags.push(normalizedTags[i].toLowerCase());
   }
 
-  // Создаем пустой объект для хранения уникальных тегов
   const uniqueTagsObj = {};
 
-  // Проверяем каждый тег и добавляем его в объект (ключ - сам тег, значение - true)
-  for (let i = 0; i < lowerCaseTags.length; i++) {
-    const tag = lowerCaseTags[i]; // Получаем текущий тег на каждой итерации
+  for (let j = 0; j < lowerCaseTags.length; j++) {
+    const tag = lowerCaseTags[j];
     uniqueTagsObj[tag] = true;
 
-    // Количество уникальных тегов равно количеству ключей в объекте
-    const uniqueTagsCount = Object.keys(uniqueTagsObj).length;
-
-    // Сравниваем количество уникальных тегов с длиной исходного массива
-    return lowerCaseTags.length === uniqueTagsCount;
   }
+
+  const uniqueTagsCount = Object.keys(uniqueTagsObj).length;
+  return lowerCaseTags.length === uniqueTagsCount;
 }
 
 // Добавляем валидатор для комментария
