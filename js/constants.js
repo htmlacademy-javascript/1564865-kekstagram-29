@@ -10,3 +10,5 @@ export const SCALE_STEP = 25;
 export const MIN_SCALE = 25;
 export const MAX_SCALE = 100;
 export const DEFAULT_SCALE = 100;
+
+export const ALERT_SHOW_TIME = 5000;

@@ -1,3 +1,5 @@
+import {ALERT_SHOW_TIME} from './constants.js';
+
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -85,4 +87,22 @@ const EFFECTS = [
   }
 ];
 
-export { getRandomArrayElement, getRandomInteger, isEscapeKey, generatePhotoId, handleKeyDown, EFFECTS };
+// Показываем ошибку на главной странице
+const showAlert = (message) => {
+  const alert = document.createElement('div');
+  alert.style.position = 'absolute';
+  alert.style.zIndex = '100';
+  alert.style.top = '0';
+  alert.style.padding = '10px 3px';
+  alert.style.fontSize = '30px';
+  alert.style.textAlign = 'center';
+  alert.style.background = 'red';
+  alert.textContent = message;
+  document.body.append(alert);
+
+  setTimeout(() => {
+    alert.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+export { getRandomArrayElement, getRandomInteger, isEscapeKey, generatePhotoId, handleKeyDown, EFFECTS, showAlert };
