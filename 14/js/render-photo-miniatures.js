@@ -1,5 +1,3 @@
-//import { photosArray } from './generation-photo.js';
-
 const randomUserImageTemplate = document
   .querySelector('#picture')
   .content.querySelector('.picture');
