@@ -107,4 +107,29 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export { getRandomArrayElement, getRandomInteger, isEscapeKey, generatePhotoId, handleKeyDown, EFFECTS, showAlert };
+// Функция debounce для устранения дребезга:
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+// Функция throttle для пропуска кадров:
+function throttle (callback, delayBetweenFrames) {
+  let lastTime = 0;
+
+  return (...rest) => {
+    const now = new Date();
+
+    if (now - lastTime >= delayBetweenFrames) {
+      callback.apply(this, rest);
+      lastTime = now;
+    }
+  };
+}
+
+export { getRandomArrayElement, getRandomInteger, isEscapeKey, generatePhotoId, handleKeyDown, EFFECTS, showAlert, debounce, throttle };
