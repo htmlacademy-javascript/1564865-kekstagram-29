@@ -1,17 +1,16 @@
 const MAX_HASHTAG_COUNT = 5;
 const MAX_COMMENT_LENGTH = 140;
-const HASHTAG_VALIDATION_REGEX = /^#[a-zа-яё0-9]{1,19}$/i; // Регулярное выражение для проверки валидности хэштега
+const HASHTAG_VALIDATION_REGEX = /^#[a-zа-яё0-9]{1,19}$/i;
 const ErrorText = {
-  INVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хэштегов`, // Текст ошибки при неверном количестве хэштегов
-  NOT_UNIQUE: 'Хэштеги должны быть уникальными', // Текст ошибки при повторяющихся хэштегах
-  INVALID_PATTERN: 'Неправильный хэштег', // Текст ошибки при неправильном формате хэштега
+  INVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хэштегов`,
+  NOT_UNIQUE: 'Хэштеги должны быть уникальными',
+  INVALID_PATTERN: 'Неправильный хэштег',
 };
 
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagInput = uploadForm.querySelector('.text__hashtags');
 const commentInput = uploadForm.querySelector('.text__description');
 
-// Создаем экземпляр Pristine для валидации формы uploadForm
 const formValidator = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper'
@@ -55,7 +54,6 @@ function hasUniqueTags(value) {
   return lowerCaseTags.length === uniqueTagsCount;
 }
 
-// Добавляем валидатор для комментария
 formValidator.addValidator(commentInput, validateCommentInput);
 
 formValidator.addValidator(
