@@ -88,18 +88,6 @@ const setOnFormSubmit = (callback) => {
   });
 };
 
-fileChooser.addEventListener('change', () => {
-  const selectedFile = fileChooser.files[0];
-  const fileName = selectedFile.name.toLowerCase();
-
-  const isValidFileType = FILE_TYPES.some((it) => fileName.endsWith(it));
-
-  if (isValidFileType) {
-    imageElement.src = URL.createObjectURL(selectedFile);
-    effectsPreviewElement.forEach((previewElement) => (previewElement.style.backgroundImage = `url(${imageElement.src})`));
-    showUploadOverlay();
-  }
-});
 
 fileChooser.addEventListener('change', onFileInputChange);
 uploadCancelButton.addEventListener('click', onCancelButtonClick);

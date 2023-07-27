@@ -69,7 +69,6 @@ const onCommentsLoaderClick = () => renderComments();
 const onCancelButtonClick = () => {
   closePictureModal();
 };
-
 const renderBigPictureDetails = ({ url, likes, description }) => {
   bigPictureOverlay.querySelector('.big-picture__img img').src = url;
   bigPictureOverlay.querySelector('.big-picture__img img').alt = description;
