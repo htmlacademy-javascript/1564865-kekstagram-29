@@ -18,20 +18,13 @@ const imageElement = document.querySelector('.img-upload__preview img');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
 const effectsPreviewElement = document.querySelectorAll('.effects__preview');
 
-fileChooser.addEventListener('change', () => {
-  const selectedFile = fileChooser.files[0];
-  const fileName = selectedFile.name.toLowerCase();
-
-  const isValidFileType = FILE_TYPES.some((it) => fileName.endsWith(it));
-
-  if (isValidFileType) {
-    imageElement.src = URL.createObjectURL(selectedFile);
-    effectsPreviewElement.forEach((previewElement) => (previewElement.style.backgroundImage = `url(${imageElement.src})`));
-  }
-});
+const isTextFieldFocused = () =>
+  document.activeElement === hashtagInput ||
+  document.activeElement === commentInput;
 
 function handleEscapeKey(evt) {
-  if (isEscapeKey(evt)) {
+  const error = document.querySelector('.error');
+  if (isEscapeKey(evt) && !isTextFieldFocused() && !error) {
     evt.preventDefault();
     hideUploadOverlay();
   }
@@ -85,7 +78,6 @@ const setOnFormSubmit = (callback) => {
       toggleSubmitButton(true);
       try {
         await callback(new FormData(uploadForm));
-        hideUploadOverlay();
         toggleSubmitButton(false);
       } catch (err) {
         showAlert(err.message);
@@ -95,6 +87,20 @@ const setOnFormSubmit = (callback) => {
     }
   });
 };
+
+
+fileChooser.addEventListener('change', () => {
+  const selectedFile = fileChooser.files[0];
+  const fileName = selectedFile.name.toLowerCase();
+
+  const isValidFileType = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (isValidFileType) {
+    imageElement.src = URL.createObjectURL(selectedFile);
+    effectsPreviewElement.forEach((previewElement) => (previewElement.style.backgroundImage = `url(${imageElement.src})`));
+    showUploadOverlay();
+  }
+});
 
 fileChooser.addEventListener('change', onFileInputChange);
 uploadCancelButton.addEventListener('click', onCancelButtonClick);
