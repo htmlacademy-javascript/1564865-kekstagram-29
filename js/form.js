@@ -8,28 +8,34 @@ const submitButtonText = {
   SUBMITTING: 'Отправляю...',
 };
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const pageBody = document.querySelector('body');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const uploadCancelButton = uploadForm.querySelector('.img-upload__cancel');
-const fileInput = uploadForm.querySelector('.img-upload__input');
+const fileChooser = uploadForm.querySelector('.img-upload__input[type=file]');
+const imageElement = document.querySelector('.img-upload__preview img');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
+const effectsPreviewElement = document.querySelectorAll('.effects__preview');
 
-// Функция для обработки события нажатия клавиши Escape
+const isTextFieldFocused = () =>
+  document.activeElement === hashtagInput ||
+  document.activeElement === commentInput;
+
 function handleEscapeKey(evt) {
-  if (isEscapeKey(evt)) {
+  const error = document.querySelector('.error');
+  if (isEscapeKey(evt) && !isTextFieldFocused() && !error) {
     evt.preventDefault();
     hideUploadOverlay();
   }
 }
 
-// Функция для отображения оверлея загрузки изображения
 function showUploadOverlay() {
   uploadOverlay.classList.remove('hidden');
   pageBody.classList.add('modal-open');
   document.addEventListener('keydown', handleEscapeKey);
 }
 
-// Функция для скрытия оверлея загрузки изображения
 function hideUploadOverlay() {
   uploadForm.reset();
   formValidator.reset();
@@ -40,17 +46,14 @@ function hideUploadOverlay() {
   document.removeEventListener('keydown', handleEscapeKey);
 }
 
-// Функция обработки события изменения файла в поле загрузки изображения
 function onFileInputChange() {
   showUploadOverlay();
 }
 
-// Функция обработки события клика на кнопке отмены загрузки
 function onCancelButtonClick() {
   hideUploadOverlay();
 }
 
-// Функции для блокировки и разблокировки кнопки отправки
 const blockSubmitButton = () => {
   submitButton.disabled = true;
 };
@@ -67,32 +70,40 @@ const toggleSubmitButton = (isDisabled) => {
 };
 
 const setOnFormSubmit = (callback) => {
-  // Добавление обработчика события 'submit' (отправка формы)
-  // Делаем обработчик события submit асинхронным и используем 'await' при вызове 'sendData' для обработки промиса
   uploadForm.addEventListener('submit', async (evt) => {
     evt.preventDefault();
-    const isValid = formValidator.validate();// Проверяем валидность данных формы с помощью formValidator
+    const isValid = formValidator.validate();
     if (isValid) {
-      blockSubmitButton();// Если данные валидны, блокируем кнопку отправки
-      toggleSubmitButton(true);// Меняем текст на кнопке отправки на "Отправляю..."
+      blockSubmitButton();
+      toggleSubmitButton(true);
       try {
-        // Отправляем данные формы на сервер с помощью функции sendData и объекта FormData
-        await callback(new FormData(uploadForm)); // Используем 'await' для обработки промиса
-        hideUploadOverlay();// Если запрос выполнен успешно, скрываем оверлей загрузки
-        toggleSubmitButton(false);// Меняем текст на кнопке отправки обратно на "Опубликовать"
+        await callback(new FormData(uploadForm));
+        toggleSubmitButton(false);
       } catch (err) {
-        showAlert(err.message);// Если возникла ошибка при выполнении запроса, показываем сообщение об ошибке
+        showAlert(err.message);
       } finally {
-        unblockSubmitButton();// Вне зависимости от успешного выполнения запроса или возникновения ошибки, разблокируем кнопку отправки формы
+        unblockSubmitButton();
       }
     }
   });
 };
 
+fileChooser.addEventListener('change', () => {
+  const selectedFile = fileChooser.files[0];
+  const fileName = selectedFile.name.toLowerCase();
 
-fileInput.addEventListener('change', onFileInputChange);//Выборе файла через поле загрузки
-uploadCancelButton.addEventListener('click', onCancelButtonClick);//Клике на кнопку отмены
-commentInput.addEventListener('keydown', handleKeyDown);// При нажатии клавиши в поле хэштега, вызывается функция handleKeyDown
-hashtagInput.addEventListener('keydown', handleKeyDown);// При нажатии клавиши в поле хэштега, вызывается функция handleKeyDown
+  const isValidFileType = FILE_TYPES.some((it) => fileName.endsWith(it));
 
-export { uploadForm, hideUploadOverlay, setOnFormSubmit };
+  if (isValidFileType) {
+    imageElement.src = URL.createObjectURL(selectedFile);
+    effectsPreviewElement.forEach((previewElement) => (previewElement.style.backgroundImage = `url(${imageElement.src})`));
+    showUploadOverlay();
+  }
+});
+
+fileChooser.addEventListener('change', onFileInputChange);
+uploadCancelButton.addEventListener('click', onCancelButtonClick);
+commentInput.addEventListener('keydown', handleKeyDown);
+hashtagInput.addEventListener('keydown', handleKeyDown);
+
+export { hideUploadOverlay, setOnFormSubmit };
