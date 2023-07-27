@@ -87,7 +87,6 @@ const EFFECTS = [
   }
 ];
 
-// Показываем ошибку на главной странице
 const showAlert = (message) => {
   const alert = document.createElement('div');
   alert.style.position = 'absolute';
@@ -107,7 +106,6 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-// Функция debounce для устранения дребезга:
 function debounce (callback, timeoutDelay = 500) {
   let timeoutId;
 
@@ -118,7 +116,6 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-// Функция throttle для пропуска кадров:
 function throttle (callback, delayBetweenFrames) {
   let lastTime = 0;
 

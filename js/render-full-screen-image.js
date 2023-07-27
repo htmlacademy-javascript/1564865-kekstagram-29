@@ -58,7 +58,6 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-// Функция, закрывающая полноэкранный просмотр изображения
 const closePictureModal = () => {
   bigPictureOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -67,7 +66,6 @@ const closePictureModal = () => {
 
 const onCommentsLoaderClick = () => renderComments();
 
-// Функция рендера большой фотографии с данными
 const renderBigPictureDetails = ({ url, likes, description }) => {
   bigPictureOverlay.querySelector('.big-picture__img img').src = url;
   bigPictureOverlay.querySelector('.big-picture__img img').alt = description;
@@ -75,7 +73,6 @@ const renderBigPictureDetails = ({ url, likes, description }) => {
   bigPictureOverlay.querySelector('.social__caption').textContent = description;
 };
 
-// Функция, открывающая полноэкранный просмотр изображения
 const openPictureModal = (data) => {
   bigPictureOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -84,7 +81,7 @@ const openPictureModal = (data) => {
   document.addEventListener('keydown', onDocumentKeydown);
 
   renderBigPictureDetails(data);
-  commentsShow = 0; // Обнуление значения commentsShow
+  commentsShow = 0;
   comments = data.comments;
   if (comments.length > 0) {
     renderComments();

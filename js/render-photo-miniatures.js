@@ -1,7 +1,6 @@
 const randomUserImageTemplate = document
   .querySelector('#picture')
   .content.querySelector('.picture');
-//const picturesContainer = document.querySelector('.pictures');
 
 const createPhotoMiniature = ({ comments, description, url, likes, id }) => {
   const photoMiniature = randomUserImageTemplate.cloneNode(true);
