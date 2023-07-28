@@ -1,34 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
-
-const getRandomInteger = (min, max) => {
-  const lower = Math.ceil(Math.min(min, max));
-  const upper = Math.floor(Math.max(min, max));
-  const result = Math.random() * (upper - lower + 1) + lower;
-
-  return Math.floor(result);
-};
-
-const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
-const createGeneratorInRange = (firstIndex, lastIndex) => {
-  const previousValues = [];
-  return () => {
-    let currentValue = firstIndex;
-
-    if (previousValues.length >= lastIndex) {
-      return null;
-    }
-
-    while (previousValues.includes(currentValue)) {
-      currentValue++;
-    }
-
-    previousValues.push(currentValue);
-    return currentValue;
-
-  };
-};
-const generatePhotoId = createGeneratorInRange(1, 100);
+const TIMEOUT_DELAY = 500;
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -106,27 +77,14 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-function debounce (callback, timeoutDelay = 500) {
+function debounce (callback) {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
 
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELAY);
   };
 }
 
-function throttle (callback, delayBetweenFrames) {
-  let lastTime = 0;
-
-  return (...rest) => {
-    const now = new Date();
-
-    if (now - lastTime >= delayBetweenFrames) {
-      callback.apply(this, rest);
-      lastTime = now;
-    }
-  };
-}
-
-export { getRandomArrayElement, getRandomInteger, isEscapeKey, generatePhotoId, handleKeyDown, EFFECTS, showAlert, debounce, throttle };
+export { isEscapeKey, handleKeyDown, EFFECTS, showAlert, debounce };

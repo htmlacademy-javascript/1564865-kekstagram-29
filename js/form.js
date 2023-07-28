@@ -10,17 +10,33 @@ const submitButtonText = {
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-const pageBody = document.querySelector('body');
+const pageBodyElement = document.querySelector('body');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const uploadCancelButton = uploadForm.querySelector('.img-upload__cancel');
 const fileChooser = uploadForm.querySelector('.img-upload__input[type=file]');
-const imageElement = document.querySelector('.img-upload__preview img');
+const imageUploadPreview = document.querySelector('.img-upload__preview img');
 const submitButton = uploadForm.querySelector('.img-upload__submit');
-const effectsPreviewElement = document.querySelectorAll('.effects__preview');
+const effectsPreview = document.querySelectorAll('.effects__preview');
 
 const isTextFieldFocused = () =>
   document.activeElement === hashtagInput ||
   document.activeElement === commentInput;
+
+const showUploadOverlay = () => {
+  uploadOverlay.classList.remove('hidden');
+  pageBodyElement.classList.add('modal-open');
+  document.addEventListener('keydown', handleEscapeKey);
+};
+
+const hideUploadOverlay = () => {
+  uploadForm.reset();
+  formValidator.reset();
+  resetScale();
+  resetEffects();
+  uploadOverlay.classList.add('hidden');
+  pageBodyElement.classList.remove('modal-open');
+  document.removeEventListener('keydown', handleEscapeKey);
+};
 
 function handleEscapeKey(evt) {
   const error = document.querySelector('.error');
@@ -30,29 +46,13 @@ function handleEscapeKey(evt) {
   }
 }
 
-function showUploadOverlay() {
-  uploadOverlay.classList.remove('hidden');
-  pageBody.classList.add('modal-open');
-  document.addEventListener('keydown', handleEscapeKey);
-}
-
-function hideUploadOverlay() {
-  uploadForm.reset();
-  formValidator.reset();
-  resetScale();
-  resetEffects();
-  uploadOverlay.classList.add('hidden');
-  pageBody.classList.remove('modal-open');
-  document.removeEventListener('keydown', handleEscapeKey);
-}
-
-function onFileInputChange() {
+const onFileInputChange = () => {
   showUploadOverlay();
-}
+};
 
-function onCancelButtonClick() {
+const onCancelButtonClick = () => {
   hideUploadOverlay();
-}
+};
 
 const blockSubmitButton = () => {
   submitButton.disabled = true;
@@ -95,8 +95,8 @@ fileChooser.addEventListener('change', () => {
   const isValidFileType = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (isValidFileType) {
-    imageElement.src = URL.createObjectURL(selectedFile);
-    effectsPreviewElement.forEach((previewElement) => (previewElement.style.backgroundImage = `url(${imageElement.src})`));
+    imageUploadPreview.src = URL.createObjectURL(selectedFile);
+    effectsPreview.forEach((previewElement) => (previewElement.style.backgroundImage = `url(${imageUploadPreview.src})`));
     showUploadOverlay();
   }
 });

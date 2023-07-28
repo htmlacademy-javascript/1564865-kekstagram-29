@@ -16,26 +16,19 @@ const formValidator = new Pristine(uploadForm, {
   errorTextParent: 'img-upload__field-wrapper'
 });
 
-function validateCommentInput(value) {
-  return value.length <= MAX_COMMENT_LENGTH;
-}
+const validateCommentInput = (value) => value.length <= MAX_COMMENT_LENGTH;
 
-function normalizeTags(tagString) {
-  return tagString
+const normalizeTags = (tagString) =>
+  tagString
     .trim()
     .split(' ')
     .filter((tag) => Boolean(tag.length));
-}
 
-function hasValidTags(value) {
-  return normalizeTags(value).every((tag) => HASHTAG_VALIDATION_REGEX.test(tag));
-}
+const hasValidTags = (value) => normalizeTags(value).every((tag) => HASHTAG_VALIDATION_REGEX.test(tag));
 
-function hasValidCount(value) {
-  return normalizeTags(value).length <= MAX_HASHTAG_COUNT;
-}
+const hasValidCount = (value) => normalizeTags(value).length <= MAX_HASHTAG_COUNT;
 
-function hasUniqueTags(value) {
+const hasUniqueTags = (value) => {
   const normalizedTags = normalizeTags(value);
   const lowerCaseTags = [];
   for (let i = 0; i < normalizedTags.length; i++) {
@@ -52,7 +45,7 @@ function hasUniqueTags(value) {
 
   const uniqueTagsCount = Object.keys(uniqueTagsObj).length;
   return lowerCaseTags.length === uniqueTagsCount;
-}
+};
 
 formValidator.addValidator(commentInput, validateCommentInput);
 
