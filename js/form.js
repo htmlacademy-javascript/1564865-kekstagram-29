@@ -106,4 +106,7 @@ uploadCancelButton.addEventListener('click', onCancelButtonClick);
 commentInput.addEventListener('keydown', handleKeyDown);
 hashtagInput.addEventListener('keydown', handleKeyDown);
 
-export { hideUploadOverlay, setOnFormSubmit };
+export {
+  hideUploadOverlay,
+  setOnFormSubmit
+};
